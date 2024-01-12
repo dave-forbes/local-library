@@ -40,5 +40,17 @@ AuthorSchema.virtual("date_of_death_formatted").get(function () {
     : "";
 });
 
+AuthorSchema.virtual("lifespan").get(function () {
+  if (this.date_of_birth && this.date_of_death) {
+    return `${this.date_of_birth_formatted} - ${this.date_of_death_formatted}`;
+  } else if (this.date_of_birth && !this.date_of_death) {
+    return `${this.date_of_birth_formatted} - Present`;
+  } else if (!this.date_of_birth && this.date_of_death) {
+    return `Unknown birth date - ${this.date_of_death_formatted}`;
+  } else {
+    return "Unknown lifespan";
+  }
+});
+
 // Export model
 module.exports = mongoose.model("Author", AuthorSchema);
